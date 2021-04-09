@@ -1,0 +1,13 @@
+note over selain:
+selain lisää muistiinpanon lokaaliin notes-taulukkoon
+ja renderöi muistiinpanolistan uudelleen näytölle
+end note
+
+selain->palvelin: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+
+note over palvelin:
+palvelin luo uuden muistiinpano-olion notes-taulukkoon
+POST-pyynnössä tulleen datan perusteella
+end note
+
+palvelin-->selain: HTTP 201 Created
