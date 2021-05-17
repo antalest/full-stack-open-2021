@@ -27,7 +27,7 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    
+
     const personObject = {
       name: newName,
       number: newNumber
@@ -53,25 +53,31 @@ const App = () => {
             setNotificationMessage(null)
           }, 5000)
         })
-        .catch(error => {
+        .catch(() => {
           setErrorMessage(`Information of ${person.name} has already been removed from server`)
           setTimeout(() => {
             setErrorMessage(null)
           }, 5000)
         })
-      
+
     } else {
       personService
-      .create(personObject)
-      .then(createdPerson => {
-        setPersons(persons.concat(createdPerson))
-        setNewName('')
-        setNewNumber('')
-        setNotificationMessage(`Added ${createdPerson.name}`)
-        setTimeout(() => {
-          setNotificationMessage(null)
-        }, 5000)
-      })
+        .create(personObject)
+        .then(createdPerson => {
+          setPersons(persons.concat(createdPerson))
+          setNewName('')
+          setNewNumber('')
+          setNotificationMessage(`Added ${createdPerson.name}`)
+          setTimeout(() => {
+            setNotificationMessage(null)
+          }, 5000)
+        })
+        .catch(error => {
+          setErrorMessage(error.response.data.error)
+          setTimeout(() => {
+            setErrorMessage(null)
+          }, 5000)
+        })
     }
   }
 
@@ -86,9 +92,9 @@ const App = () => {
         console.log(response)
         setPersons(persons.filter(p => p.id !== person.id))
         setNotificationMessage(`Removed ${person.name}`)
-          setTimeout(() => {
-            setNotificationMessage(null)
-          }, 5000)
+        setTimeout(() => {
+          setNotificationMessage(null)
+        }, 5000)
       })
   }
 
@@ -114,15 +120,15 @@ const App = () => {
       <h2>Phonebook</h2>
       <Notification message={notificationMessage} />
       <Error message={errorMessage} />
-      
+
       <Filter newFilter={newFilter} handleFilterChange={handleFilterChange} />
-      
+
       <h3>Add a new</h3>
-      
+
       <PersonForm addPerson={addPerson} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} />
 
       <h3>Numbers</h3>
-      
+
       <Persons personsToShow={personsToShow} removePerson={removePerson} />
 
     </div>
