@@ -1,0 +1,8 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "Building backends is fun 2",
+  "author": "mluukkai",
+  "url": "https://www.mooc.fi/Building-backends-is-fun-2"
+}
