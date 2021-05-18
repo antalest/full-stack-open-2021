@@ -1,4 +1,4 @@
-require('dotenv').config()
+const config = require('./utils/config')
 const logger = require('./utils/logger')
 const express = require('express')
 const app = express()
@@ -14,10 +14,9 @@ const blogSchema = mongoose.Schema({
 
 const Blog = mongoose.model('Blog', blogSchema)
 
-const mongoUrl = process.env.MONGODB_URI
 logger.info('Connecting to MongoDB...')
 mongoose
-  .connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
+  .connect(config.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
   .then(result => {
     logger.info('Connected to MongoDB', result.connection.name)
   })
