@@ -1,8 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFuYSIsImlkIjoiNjBhOTM1YzlkZjczNGMzNWYwYWVhYWVjIiwiaWF0IjoxNjIxNzE4NjEwLCJleHAiOjE2MjE3MjIyMTB9.I_hFUrrBSJ8T4bBc0SHN2_xURkAw87064w7T3nn0Si8
 
 {
-  "title": "Building backends is fun 2",
-  "author": "mluukkai",
-  "url": "https://www.mooc.fi/Building-backends-is-fun-2"
+  "title": "creating blog with bearer JWT",
+  "author": "antti",
+  "url": "https://www.mooc.fi/jwt"
 }
