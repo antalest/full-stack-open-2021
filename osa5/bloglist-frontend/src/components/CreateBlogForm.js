@@ -1,13 +1,39 @@
-import React from 'react'
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 
-const CreateBlogForm = ({ handleCreateBlog, title, setTitle, author, setAuthor, url, setURL }) => {
+const CreateBlogForm = ({ createBlog, setErrorMessage }) => {
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setURL] = useState('')
+
+  const handleCreateBlog = async (event) => {
+    event.preventDefault()
+
+    try {
+      await createBlog({
+        title: title,
+        author: author,
+        url: url
+      })
+
+      setTitle('')
+      setAuthor('')
+      setURL('')
+    } catch (exception) {
+      setErrorMessage(exception.response.data.error)
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+    }
+  }
+
   return (
     <div>
       <h2>Create new</h2>
       <form onSubmit={handleCreateBlog}>
         <div>
           Title:
-            <input
+          <input
             type="text"
             value={title}
             name="Title"
@@ -16,7 +42,7 @@ const CreateBlogForm = ({ handleCreateBlog, title, setTitle, author, setAuthor, 
         </div>
         <div>
           Author:
-            <input
+          <input
             type="text"
             value={author}
             name="Author"
@@ -25,7 +51,7 @@ const CreateBlogForm = ({ handleCreateBlog, title, setTitle, author, setAuthor, 
         </div>
         <div>
           url:
-            <input
+          <input
             type="text"
             value={url}
             name="url"
@@ -36,6 +62,11 @@ const CreateBlogForm = ({ handleCreateBlog, title, setTitle, author, setAuthor, 
       </form>
     </div>
   )
+}
+
+CreateBlogForm.propTypes = {
+  createBlog: PropTypes.func.isRequired,
+  setErrorMessage: PropTypes.func.isRequired,
 }
 
 export default CreateBlogForm
