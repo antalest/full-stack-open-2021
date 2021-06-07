@@ -39,7 +39,7 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
 
   if (showFullInfo) {
     return (
-      <div style={blogStyle}>
+      <div style={blogStyle} className={blog}>
         <div onClick={toggleShowFullInfo} className="blogTitle">
           {blog.title} {blog.author} <button onClick={toggleShowFullInfo}>hide</button>
         </div>

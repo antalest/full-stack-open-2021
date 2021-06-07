@@ -34,6 +34,7 @@ const CreateBlogForm = ({ createBlog, setErrorMessage }) => {
         <div>
           Title:
           <input
+            id='title'
             type="text"
             value={title}
             name="Title"
@@ -43,6 +44,7 @@ const CreateBlogForm = ({ createBlog, setErrorMessage }) => {
         <div>
           Author:
           <input
+            id='author'
             type="text"
             value={author}
             name="Author"
@@ -52,6 +54,7 @@ const CreateBlogForm = ({ createBlog, setErrorMessage }) => {
         <div>
           url:
           <input
+            id='url'
             type="text"
             value={url}
             name="url"
@@ -65,8 +68,7 @@ const CreateBlogForm = ({ createBlog, setErrorMessage }) => {
 }
 
 CreateBlogForm.propTypes = {
-  createBlog: PropTypes.func.isRequired,
-  setErrorMessage: PropTypes.func.isRequired,
+  createBlog: PropTypes.func.isRequired
 }
 
 export default CreateBlogForm
