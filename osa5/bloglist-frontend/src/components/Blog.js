@@ -35,19 +35,19 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
     }
   }
 
-  const showWhenUserIsCreator = { display: user.username === blog.user.username ? '' : 'none' }
+  const showWhenUserIsCreator = { display: user && blog.user && user.username === blog.user.username ? '' : 'none' }
 
   if (showFullInfo) {
     return (
       <div style={blogStyle} className={blog}>
         <div onClick={toggleShowFullInfo} className="blogTitle">
-          {blog.title} {blog.author} <button onClick={toggleShowFullInfo}>hide</button>
+          {blog.title} {blog.author} <button id='hide-button' onClick={toggleShowFullInfo}>hide</button>
         </div>
-        <div>{blog.url}</div>
-        <div>likes {blog.likes} <button onClick={handleLike}>like</button></div>
+        <div className="blogURL">{blog.url}</div>
+        <div>likes {blog.likes} <button id='like-button' onClick={handleLike}>like</button></div>
         <div>{blog.user.name}</div>
         <div style={showWhenUserIsCreator}>
-          <button onClick={handleRemove}>remove</button>
+          <button id='remove-button' onClick={handleRemove}>remove</button>
         </div>
       </div>
     )
@@ -55,7 +55,7 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
     return (
       <div style={blogStyle}>
         <div onClick={toggleShowFullInfo} className="blogTitle">
-          {blog.title} {blog.author} <button onClick={toggleShowFullInfo}>view</button>
+          {blog.title} {blog.author} <button id='view-button' onClick={toggleShowFullInfo}>view</button>
         </div>
       </div>
     )
