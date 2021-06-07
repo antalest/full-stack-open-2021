@@ -6,4 +6,4 @@ const LoggedUser = ({ user, handleLogOut }) => (
   </div>
 )
 
-export default LoggedUser;
+export default LoggedUser
