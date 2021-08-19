@@ -10,12 +10,13 @@ const AnecdoteList = () => {
       .sort((a, b) => b.votes - a.votes)
       .filter(a => a.content.toLowerCase().includes(filter.toLowerCase()))
   )
+  const timeoutID = useSelector(({ notification }) => notification.timeoutID)
   const dispatch = useDispatch()
 
   const vote = (anecdote) => {
     dispatch(voteAnecdote(anecdote))
 
-    dispatch(setNotification(`you voted '${anecdote.content}'`, 10))
+    dispatch(setNotification(`you voted '${anecdote.content}'`, 5, timeoutID))
   }
 
   return (
