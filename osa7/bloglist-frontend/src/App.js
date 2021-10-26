@@ -10,32 +10,35 @@ import './index.css'
 import Error from './components/Error'
 import Togglable from './components/Togglable'
 
+import { useSelector, useDispatch } from 'react-redux'
+import { setNotification } from './reducers/notificationReducer'
+import { initilizeBlogs, setBlogs } from './reducers/blogsReducer'
+import { setUser } from './reducers/userReducer'
 
 
 const App = () => {
-  const [blogs, setBlogs] = useState([])
+  const dispatch = useDispatch()
+  const notification = useSelector(state => state.notification)
+  const blogs = useSelector(state => state.blogs)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
-  const [notificationMessage, setNotificationMessage] = useState(null)
+  const user = useSelector(state => state.user)
   const [errorMessage, setErrorMessage] = useState(null)
 
   const createBlogFormRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then(blogs =>
-      setBlogs( blogs )
-    )
-  }, [])
+    dispatch(initilizeBlogs())
+  }, [dispatch])
 
   useEffect(() => {
     const loggedUserJSON = window.localStorage.getItem('loggedBlogappUser')
     if (loggedUserJSON) {
       const user = JSON.parse(loggedUserJSON)
-      setUser(user)
+      dispatch(setUser(user))
       blogService.setToken(user.token)
     }
-  }, [])
+  }, [dispatch])
 
   const blogsOrderedByLikesDesc = blogs.sort((a, b) => b.likes - a.likes)
 
@@ -50,7 +53,7 @@ const App = () => {
         'loggedBlogappUser', JSON.stringify(user)
       )
       blogService.setToken(user.token)
-      setUser(user)
+      dispatch(setUser(user))
       setUsername('')
       setPassword('')
     } catch (exception) {
@@ -64,19 +67,19 @@ const App = () => {
   const handleLogOut = () => {
     window.localStorage.removeItem('loggedBlogappUser')
     blogService.setToken(null)
-    setUser(null)
+    dispatch(setUser(null))
   }
 
   const createBlog = async (blogObject) => {
     const blog = await blogService.create(blogObject)
 
-    setBlogs(blogs.concat({ ...blog, user: user }))
+    dispatch(setBlogs(blogs.concat({ ...blog, user: user })))
 
     createBlogFormRef.current.toggleVisibility()
 
-    setNotificationMessage(`a new blog ${blog.title} by ${blog.author} added`)
+    dispatch(setNotification(`a new blog ${blog.title} by ${blog.author} added`))
     setTimeout(() => {
-      setNotificationMessage(null)
+      dispatch(setNotification(null))
     }, 5000)
   }
 
@@ -89,13 +92,13 @@ const App = () => {
         return blog
       }
     })
-    setBlogs(updatedBlogs)
+    dispatch(setBlogs(updatedBlogs))
   }
 
   const removeBlog = async (id) => {
     await blogService.remove(id)
     const updatedBlogs = blogs.filter(blog => blog.id !== id)
-    setBlogs(updatedBlogs)
+    dispatch(setBlogs(updatedBlogs))
   }
 
 
@@ -110,7 +113,7 @@ const App = () => {
 
   return (
     <div>
-      <Notification message={notificationMessage} />
+      <Notification message={notification} />
       <Error message={errorMessage} />
       <h2>Blogs</h2>
       <LoggedUser user={user} handleLogOut={handleLogOut} />
