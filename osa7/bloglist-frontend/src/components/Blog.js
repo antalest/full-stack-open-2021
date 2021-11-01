@@ -1,21 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { Form, Button } from 'react-bootstrap'
 
-const Blog = ({ blog, updateBlog, removeBlog, user }) => {
-  const [showFullInfo, setShowFullInfo] = useState(false)
-
-  const toggleShowFullInfo = () => {
-    setShowFullInfo(!showFullInfo)
-  }
-
-  const blogStyle = {
-    paddingTop: 2,
-    paddingLeft: 2,
-    paddingBottom: 2,
-    border: 'solid',
-    borderWidth: 1,
-    marginBottom: 5
-  }
-
+const Blog = ({ blog, updateBlog, comment, setComment, handleCommentSend }) => {
   const handleLike = async () => {
     try {
       const newBlog = { ...blog, likes: blog.likes + 1, user: blog.user.id }
@@ -25,41 +11,36 @@ const Blog = ({ blog, updateBlog, removeBlog, user }) => {
     }
   }
 
-  const handleRemove = async () => {
-    try {
-      if (window.confirm(`Remove blog ${blog.title} by ${blog.author} ?`)) {
-        await removeBlog(blog.id)
-      }
-    } catch (exception) {
-      console.log(exception.error)
-    }
+  if (!blog) {
+    return null
   }
 
-  const showWhenUserIsCreator = { display: user && blog.user && user.username === blog.user.username ? '' : 'none' }
-
-  if (showFullInfo) {
-    return (
-      <div style={blogStyle} className={blog}>
-        <div onClick={toggleShowFullInfo} className="blogTitle">
-          {blog.title} {blog.author} <button id='hide-button' onClick={toggleShowFullInfo}>hide</button>
-        </div>
-        <div className="blogURL">{blog.url}</div>
-        <div>likes {blog.likes} <button id='like-button' onClick={handleLike}>like</button></div>
-        <div>{blog.user.name}</div>
-        <div style={showWhenUserIsCreator}>
-          <button id='remove-button' onClick={handleRemove}>remove</button>
-        </div>
-      </div>
-    )
-  } else {
-    return (
-      <div style={blogStyle}>
-        <div onClick={toggleShowFullInfo} className="blogTitle">
-          {blog.title} {blog.author} <button id='view-button' onClick={toggleShowFullInfo}>view</button>
-        </div>
-      </div>
-    )
-  }
+  return (
+    <div>
+      <h2>{blog.title}</h2>
+      <div><a href={blog.url}>{blog.url}</a></div>
+      <div>{blog.likes} likes <Button onClick={handleLike}>like</Button></div>
+      <div>added by {blog.user.name}</div>
+      <h3>comments</h3>
+      <Form onSubmit={handleCommentSend}>
+        <Form.Control
+          id="comment"
+          type="text"
+          value={comment}
+          name="Comment"
+          onChange={({ target }) => setComment(target.value)}
+        />
+        <Button id="send-button" type="submit">send</Button>
+      </Form>
+      <ul>
+        {blog.comments.map(comment =>
+          <li key={comment}>
+            {comment}
+          </li>
+        )}
+      </ul>
+    </div>
+  )
 }
 
 export default Blog
